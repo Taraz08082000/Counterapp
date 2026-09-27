@@ -58,6 +58,10 @@ fun CounterScreen(modifier: Modifier = Modifier) {
         Button(onClick = { count++ }) {
             Text("Қосу")
         }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = { count-- }) {
+            Text("Азайту")
+        }
     }
 }
 
