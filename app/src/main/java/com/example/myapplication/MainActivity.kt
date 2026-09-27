@@ -52,8 +52,13 @@ fun CounterScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val message = when {
+            count > 12 -> "Сан: $count (Көп!)"
+            count < 0 -> "Сан: $count (Теріс!)"
+        else -> "Сан: $count"
+        }
         Text(
-            text = "Сан: $count",
+            text = message,
             fontSize = 32.sp
         )
         Spacer(modifier = Modifier.height(16.dp))
