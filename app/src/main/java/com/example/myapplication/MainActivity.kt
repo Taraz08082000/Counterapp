@@ -16,7 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CounterScreen(modifier: Modifier = Modifier) {
-    var count by remember { mutableStateOf(0) }
+    var count by remember { mutableIntStateOf(0) }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -55,30 +55,33 @@ fun CounterScreen(modifier: Modifier = Modifier) {
         val message = when {
             count > 12 -> "Сан: $count (Көп!)"
             count < 0 -> "Сан: $count (Теріс!)"
-        else -> "Сан: $count"
+            else -> "Сан: $count"
         }
         Text(
             text = message,
             fontSize = 32.sp
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { count++ },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Green
-        )
+        Button(
+            onClick = { count++ },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Green
+            )
         ) {
             Text("Қосу")
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { count-- },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Red
-        )
+        Button(
+            onClick = { count-- },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Red
+            )
         ) {
             Text("Азайту")
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { count = 0 },
+        Button(
+            onClick = { count = 0 },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Blue
             )
