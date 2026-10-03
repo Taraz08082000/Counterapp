@@ -1,6 +1,9 @@
 package com.example.myapplication
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.os.VibratorManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,10 +25,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import android.os.Vibrator
+import android.os.VibrationEffect
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +52,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CounterScreen(modifier: Modifier = Modifier) {
     var count by remember { mutableIntStateOf(0) }
+    val context = LocalContext.current
+    val vibrator = remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          val manager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+          manager.defaultVibrator
+        } else {
+          @Suppress("DEPRECATION")
+          context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+        }
+    }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -63,7 +80,22 @@ fun CounterScreen(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { count++ },
+            onClick = {
+                count++
+               if (count==12) {
+               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                   vibrator.vibrate(
+                       VibrationEffect.createOneShot(
+                           200,
+                           VibrationEffect.DEFAULT_AMPLITUDE
+                       )
+                   )
+               } else {
+                   @Suppress("DEPRECATION")
+                   vibrator.vibrate(200)
+               }
+             }
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Green
             )
